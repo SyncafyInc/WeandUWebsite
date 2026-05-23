@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--r:#C21200;--b:#080808;--w:#F0EDE6;--g:#111;--border:rgba(240,237,230,.07)}
+body{background:var(--b);color:var(--w);font-family:'Space Mono',monospace;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,8,8,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:0 40px;height:56px;
+}
+.nav-logo{
+  font-family:'Space Mono',monospace;font-weight:700;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--w);
+}
+
+/* Icon nav */
+.nav-icons{display:flex;gap:4px;align-items:center}
+
+.nav-icon-btn{
+  position:relative;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  border:none;background:transparent;cursor:pointer;
+  border-radius:10px;
+  transition:background .2s;
+}
+.nav-icon-btn:hover{background:rgba(240,237,230,.06)}
+.nav-icon-btn.on{background:rgba(194,18,0,.15)}
+.nav-icon-btn.on svg{stroke:var(--r);opacity:1}
+
+.nav-icon-btn svg{
+  width:18px;height:18px;
+  stroke:rgba(240,237,230,.38);
+  stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;
+  fill:none;
+  transition:stroke .2s, opacity .2s, transform .2s;
+  opacity:1;
+}
+.nav-icon-btn:hover svg{stroke:var(--w);transform:scale(1.1)}
+
+/* tooltip */
+.nav-icon-btn::after{
+  content:attr(data-tip);
+  position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  font-family:'Space Mono',monospace;font-size:7px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  background:rgba(8,8,8,.95);color:rgba(240,237,230,.6);
+  padding:4px 8px;border-radius:4px;white-space:nowrap;
+  border:1px solid var(--border);
+  opacity:0;pointer-events:none;transition:opacity .15s;
+}
+.nav-icon-btn:hover::after{opacity:1}
+
+/* active indicator dot */
+.nav-icon-btn.on::before{
+  content:'';
+  position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:3px;height:3px;border-radius:50%;
+  background:var(--r);
+}
+
+.nav-right{display:flex;justify-content:flex-end}
+.nav-cta{
+  font-family:'Space Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--w);background:transparent;
+  border:1.5px solid rgba(240,237,230,.4);
+  padding:8px 20px;border-radius:100px;cursor:pointer;transition:all .2s;
+}
+.nav-cta:hover{background:var(--w);color:var(--b)}
+
+/* ── PAGES ── */
+.page{display:none}.page.on{display:block}
+
+/* ── HERO — fixed, no blank space ── */
+.hero{
+  min-height:100vh;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 40px 48px;
+  background:var(--b);
+}
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(194,18,0,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(194,18,0,.025) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.hero-stamp{
+  position:absolute;top:-40px;right:-60px;
+  font-family:'Bebas Neue',sans-serif;font-size:380px;
+  line-height:.85;-webkit-text-stroke:1px rgba(194,18,0,.07);color:transparent;
+  pointer-events:none;user-select:none;
+}
+.hero-eyebrow{
+  font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(240,237,230,.35);margin-bottom:20px;
+}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(80px,13vw,152px);
+  line-height:.88;letter-spacing:.01em;margin-bottom:28px;
+}
+.hero-title .o{-webkit-text-stroke:2px var(--w);color:transparent}
+.hero-title .r{color:var(--r)}
+.hero-body{
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  line-height:2;color:rgba(240,237,230,.38);
+  max-width:400px;margin-bottom:36px;
+}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-r{
+  font-family:'Space Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  background:var(--r);color:var(--w);border:none;
+  padding:13px 28px;border-radius:100px;cursor:pointer;transition:transform .15s;
+}
+.btn-r:hover{transform:scale(1.04)}
+.btn-o{
+  font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;
+  background:transparent;color:var(--w);
+  border:1px solid rgba(240,237,230,.18);
+  padding:13px 28px;border-radius:100px;cursor:pointer;
+}
+.hero-stats{
+  position:absolute;bottom:48px;right:40px;
+  display:flex;flex-direction:column;gap:16px;align-items:flex-end;
+}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--r);line-height:1}
+.stat-lbl{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,237,230,.28)}
+
+/* TICKER */
+.ticker{background:var(--r);padding:9px 0;overflow:hidden}
+.ticker-inner{display:flex;white-space:nowrap;animation:tick 22s linear infinite}
+.t-i{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.08em;padding:0 20px}
+.t-s{width:4px;height:4px;border-radius:50%;background:rgba(240,237,230,.4);flex-shrink:0;align-self:center}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* EVENTS */
+.events-wrap{padding:56px 40px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.02em}
+.sec-meta{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,237,230,.25)}
+.events-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.ec{background:var(--g);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .25s,transform .2s}
+.ec:hover{border-color:rgba(194,18,0,.5);transform:translateY(-2px)}
+.ec-vis{position:relative;overflow:hidden}
+.ec-main .ec-vis{height:280px}
+.ec-side .ec-vis{height:140px}
+.ec-bg{position:absolute;inset:0}
+.ec-stamp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:160px;color:rgba(240,237,230,.04);pointer-events:none}
+.ec-hl{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(194,18,0,.1) 1px,transparent 1px);background-size:9px 9px}
+.ec-tag{position:absolute;bottom:14px;left:14px;z-index:2;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:4px 11px;border-radius:100px;border:1px solid rgba(240,237,230,.22);color:var(--w);background:rgba(8,8,8,.55)}
+.ec-body{padding:18px 22px 22px}
+.ec-main .ec-body{display:flex;align-items:flex-end;justify-content:space-between}
+.ec-name{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.02em;line-height:1}
+.ec-name-sm{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;line-height:1;margin-bottom:4px}
+.ec-detail{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,237,230,.3);margin-top:4px}
+.ec-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.ec-price{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--r);line-height:1}
+.ec-price-sm{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--r);line-height:1}
+.ec-btn{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--w);border:1px solid rgba(240,237,230,.18);padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .2s}
+.ec-btn:hover{background:var(--r);border-color:var(--r)}
+.ec-sides{display:flex;flex-direction:column;gap:12px}
+.ec-side-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+/* ABOUT */
+.about-hero{padding:80px 40px 0;position:relative;overflow:hidden}
+.about-bg{position:absolute;top:0;left:0;right:0;font-family:'Bebas Neue',sans-serif;font-size:88px;line-height:.9;color:var(--r);opacity:.04;pointer-events:none;word-break:break-all;max-height:280px;overflow:hidden}
+.about-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);line-height:.9;letter-spacing:.02em;position:relative;z-index:2;margin-bottom:28px}
+.about-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px;position:relative;z-index:2}
+.about-copy{font-size:8px;letter-spacing:.13em;text-transform:uppercase;line-height:2.1;color:rgba(240,237,230,.42)}
+.no-yes{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.ny{padding:28px;border:1px solid var(--border)}
+.ny.no{background:var(--g)}.ny.yes{background:var(--r)}
+.ny-line{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;line-height:1.05;margin-bottom:3px}
+.ny.no .ny-line{color:rgba(240,237,230,.6)}
+.team-wrap{padding:56px 40px}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.tc{background:var(--g);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .22s}
+.tc:hover{border-color:rgba(194,18,0,.4)}
+.tc-vis{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.tc-vbg{position:absolute;inset:0}
+.tc-hl{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(194,18,0,.12) 1px,transparent 1px);background-size:6px 6px}
+.tc-ltr{font-family:'Bebas Neue',sans-serif;font-size:120px;color:rgba(240,237,230,.05);position:relative;z-index:2;line-height:1}
+.tc-body{padding:16px 18px 20px}
+.tc-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.02em;margin-bottom:2px}
+.tc-role{font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--r);margin-bottom:8px}
+.tc-bio{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:rgba(240,237,230,.28);line-height:1.85}
+
+/* CAMERA */
+.cam-hero{padding:80px 40px 36px}
+.cam-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,9vw,110px);line-height:.88;letter-spacing:.02em;margin-bottom:10px}
+.cam-sub{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,237,230,.28)}
+.filter-row{padding:0 40px;display:flex;gap:6px;margin-bottom:20px}
+.fc{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:7px 16px;border-radius:100px;cursor:pointer;border:1px solid rgba(240,237,230,.12);color:rgba(240,237,230,.35);background:transparent;transition:all .2s}
+.fc.on,.fc:hover{background:var(--r);border-color:var(--r);color:var(--w)}
+.masonry{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:0 40px 60px}
+.mc{position:relative;overflow:hidden;cursor:pointer;background:var(--g)}
+.mc:nth-child(4n+1){grid-row:span 2}
+.mc-inner{width:100%;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;position:relative;overflow:hidden}
+.mc-bg{position:absolute;inset:0}
+.mc-hl{position:absolute;bottom:0;left:0;right:0;height:55%;background-image:radial-gradient(circle,rgba(194,18,0,.1) 1px,transparent 1px);background-size:5px 5px;pointer-events:none}
+.mc-evt{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.03em;position:relative;z-index:2}
+.mc-meta{font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,230,.5);position:relative;z-index:2}
+.mc-ov{position:absolute;inset:0;background:rgba(194,18,0,.82);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;z-index:3}
+.mc:hover .mc-ov{opacity:1}
+.mc-ov-txt{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em}
+
+/* REWARDS */
+.rw-hero{padding:80px 40px 48px;position:relative;overflow:hidden}
+.rw-stamp{position:absolute;right:-20px;top:-10px;font-family:'Bebas Neue',sans-serif;font-size:340px;line-height:.85;-webkit-text-stroke:1px rgba(194,18,0,.06);color:transparent;pointer-events:none}
+.rw-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);line-height:.88;letter-spacing:.02em;margin-bottom:16px;position:relative;z-index:2}
+.rw-sub{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.35);max-width:480px;line-height:2;margin-bottom:48px;position:relative;z-index:2}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 40px;margin-bottom:40px}
+.tier{background:var(--g);border:1px solid var(--border);padding:26px;cursor:pointer;transition:border-color .22s,transform .22s;position:relative}
+.tier:hover{border-color:rgba(194,18,0,.38);transform:translateY(-3px)}.tier.feat{border-color:var(--r)}
+.tier-badge{position:absolute;top:14px;right:14px;font-size:7px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--r);color:var(--w);padding:3px 9px;border-radius:100px;font-family:'Space Mono',monospace}
+.tier-num{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--r);opacity:.18;line-height:1;margin-bottom:6px}
+.tier-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.02em;color:var(--r);margin-bottom:3px}
+.tier-req{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.25);margin-bottom:18px}
+.tier-perk{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,230,.52);display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+.tier-perk:last-child{border-bottom:none}
+.tier-perk::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--r);flex-shrink:0}
+.rw-bot{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 40px 68px}
+.member-card{background:var(--r);padding:28px;border-radius:4px;position:relative;overflow:hidden}
+.mc2-bg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(240,237,230,.07) 1px,transparent 1px);background-size:10px 10px}
+.mc2-u{position:absolute;right:14px;top:8px;font-family:'Bebas Neue',sans-serif;font-size:90px;line-height:.9;-webkit-text-stroke:1.5px rgba(240,237,230,.14);color:transparent;pointer-events:none}
+.mc2-brand{position:relative;z-index:2;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.1em;opacity:.7;margin-bottom:36px}
+.mc2-name{position:relative;z-index:2;font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;letter-spacing:.02em;margin-bottom:3px}
+.mc2-tier{position:relative;z-index:2;font-size:7px;letter-spacing:.22em;text-transform:uppercase;opacity:.65;margin-bottom:22px}
+.mc2-row{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(240,237,230,.18);padding-top:14px}
+.mc2-val{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1}
+.mc2-lbl{font-size:7px;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
+.mc2-next{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.02em}
+.ci-box{background:var(--g);border:1px solid var(--border);padding:28px}
+.ci-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.02em;margin-bottom:20px}
+.ci-row{margin-bottom:12px}
+.ci-label{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,237,230,.3);margin-bottom:5px;display:block}
+.ci-input,.ci-select{width:100%;background:#1A1A1A;border:1px solid var(--border);color:var(--w);padding:10px 14px;font-family:'Space Mono',monospace;font-size:10px;outline:none;transition:border-color .2s;border-radius:3px}
+.ci-input:focus,.ci-select:focus{border-color:var(--r)}
+.ci-btn{width:100%;background:var(--r);color:var(--w);border:none;padding:13px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;margin-top:6px;border-radius:3px;transition:opacity .2s}
+.ci-btn:hover{opacity:.86}
+
+/* ARTISTS */
+.ar-hero{padding:80px 40px 40px}
+.ar-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);line-height:.88;letter-spacing:.02em;margin-bottom:8px}
+.ar-sub{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,237,230,.28);margin-bottom:40px}
+.roster{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2px;padding:0 40px;margin-bottom:2px}
+.roster2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;padding:0 40px;margin-bottom:2px}
+.ac{background:var(--g);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s}
+.ac:hover{border-color:rgba(194,18,0,.42);transform:translateY(-2px)}
+.ac.feat{background:var(--r);border-color:var(--r)}
+.ac-vis{position:relative;overflow:hidden;height:220px}
+.ac.feat .ac-vis{height:270px}
+.ac-bg{position:absolute;inset:0}
+.ac-hl{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(240,237,230,.08) 1px,transparent 1px);background-size:6px 6px}
+.ac-u{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:150px;opacity:.05;line-height:1;pointer-events:none}
+.ac-tag{position:absolute;bottom:14px;left:14px;z-index:2;font-size:7px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:4px 10px;border-radius:100px;border:1px solid rgba(240,237,230,.22);color:var(--w);background:rgba(8,8,8,.5)}
+.ac-body{padding:16px 18px 20px}
+.ac.feat .ac-body{background:var(--r)}
+.ac-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.02em;line-height:1;margin-bottom:2px}
+.ac.feat .ac-name{font-size:34px}
+.ac-genre{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.45);margin-bottom:12px}
+.ac-stats{display:flex;gap:18px;margin-bottom:12px}
+.ac-sv{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--r);line-height:1}
+.ac.feat .ac-sv{color:var(--w)}
+.ac-sl{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.3)}
+.ac-btns{display:flex;gap:6px}
+.ac-btn{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .2s}
+.ac-btn.book{background:var(--w);color:var(--b);border:none}
+.ac-btn.kit{background:transparent;color:var(--w);border:1px solid rgba(240,237,230,.22)}
+.ac-btn.kit:hover{border-color:var(--w)}
+.ac.feat .ac-btn.book{background:#000;color:var(--w)}
+.ac-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:260px;cursor:pointer;border-style:dashed!important}
+.ac-plus{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--r);opacity:.22;line-height:1}
+.ac-plus-lbl{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.05em;margin-top:6px}
+.ac-plus-sub{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.2);margin-top:4px}
+.ai-wrap{padding:2px 40px 40px}
+.ai-box{background:var(--g);border:1px solid var(--border);padding:28px}
+.ai-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.02em;margin-bottom:6px}
+.ai-desc{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,237,230,.3);line-height:1.95;margin-bottom:24px;max-width:560px}
+.ai-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.ai-step{background:#1A1A1A;border:1px solid var(--border);padding:16px;border-radius:3px;position:relative}
+.ai-n{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--r);opacity:.22;line-height:1}
+.ai-t{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.02em;margin-bottom:4px}
+.ai-d{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,230,.28);line-height:1.8}
+.ai-arr{position:absolute;right:-6px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--r);z-index:2;background:#1A1A1A}
+.sub-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 40px 72px}
+.sub{background:var(--g);border:1px solid var(--border);padding:28px;cursor:pointer;transition:border-color .22s}
+.sub:hover,.sub.feat{border-color:var(--r)}
+.sub-price{font-family:'Bebas Neue',sans-serif;font-size:54px;line-height:1;color:var(--r)}
+.sub-per{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.28);margin-bottom:12px}
+.sub-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;margin-bottom:6px}
+.sub-desc{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,230,.3);line-height:1.95;margin-bottom:16px}
+.sub-feat{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,230,.5);display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+.sub-feat:last-of-type{border-bottom:none;margin-bottom:14px}
+.sub-feat::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--r);flex-shrink:0}
+.sub-btn{width:100%;background:var(--r);color:var(--w);border:none;padding:12px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:opacity .2s}
+.sub-btn:hover{opacity:.85}
+
+.red{color:var(--r)}.outline{-webkit-text-stroke:1.5px var(--w);color:transparent}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--r);color:var(--w);padding:10px 18px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-radius:3px;z-index:999;opacity:0;transform:translateY(6px);transition:all .28s;pointer-events:none}
+.toast.on{opacity:1;transform:translateY(0)}
+</style>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">WEAREUAND</div>
+  <div class="nav-icons">
+
+    <!-- HOME — house/location dot -->
+    <button class="nav-icon-btn on" data-tip="HOME" onclick="go('home',this)">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+      </svg>
+    </button>
+
+    <!-- ABOUT — people / collective -->
+    <button class="nav-icon-btn" data-tip="ABOUT" onclick="go('about',this)">
+      <svg viewBox="0 0 24 24">
+        <circle cx="9" cy="7" r="3"/>
+        <circle cx="15" cy="7" r="3"/>
+        <path d="M3 19c0-3.31 2.69-6 6-6h2"/>
+        <path d="M13 13h2c3.31 0 6 2.69 6 6"/>
+      </svg>
+    </button>
+
+    <!-- CAMERA — aperture / lens -->
+    <button class="nav-icon-btn" data-tip="CAMERA" onclick="go('camera',this)">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="6"/>
+        <line x1="12" y1="18" x2="12" y2="22"/>
+        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
+        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
+        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
+      </svg>
+    </button>
+
+    <!-- REWARDS — gem / diamond -->
+    <button class="nav-icon-btn" data-tip="REWARDS" onclick="go('rewards',this)">
+      <svg viewBox="0 0 24 24">
+        <path d="M6 3h12l4 6-10 12L2 9z"/>
+        <path d="M2 9h20"/>
+        <path d="M6 3l4 6m4 0l4-6"/>
+      </svg>
+    </button>
+
+    <!-- ARTISTS — waveform / sound -->
+    <button class="nav-icon-btn" data-tip="ARTISTS" onclick="go('artists',this)">
+      <svg viewBox="0 0 24 24">
+        <line x1="2" y1="12" x2="4" y2="12"/>
+        <line x1="6" y1="8" x2="6" y2="16"/>
+        <line x1="10" y1="5" x2="10" y2="19"/>
+        <line x1="14" y1="8" x2="14" y2="16"/>
+        <line x1="18" y1="6" x2="18" y2="18"/>
+        <line x1="22" y1="12" x2="20" y2="12"/>
+      </svg>
+    </button>
+
+  </div>
+  <div class="nav-right">
+    <button class="nav-cta" onclick="go('rewards',null)">Join U</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<!-- HOME -->
+<div class="page on" id="home">
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-stamp">U</div>
+    <div class="hero-eyebrow">U2026 · Vancouver · Electronic Music Collective</div>
+    <div class="hero-title">
+      COME<br><span class="o">SOLO.</span><br><span class="r">LEAVE</span><br>CONNECTED.
+    </div>
+    <div class="hero-body">No bottles. No flexing. No VIP energy.<br>No cliques. No ego. Just music. People. Moments.</div>
+    <div class="hero-btns">
+      <button class="btn-r">Upcoming events</button>
+      <button class="btn-o">Our story →</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-val">3</div><div class="stat-lbl">Events · 2026</div></div>
+      <div><div class="stat-val">YVR</div><div class="stat-lbl">Home base</div></div>
+      <div><div class="stat-val">∞</div><div class="stat-lbl">BPM</div></div>
+    </div>
+  </div>
+
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="t-i">GO OUT</span><span class="t-s"></span>
+      <span class="t-i">FEEL GOOD TOMORROW</span><span class="t-s"></span>
+      <span class="t-i">COMMUNITY OVER CLOUT</span><span class="t-s"></span>
+      <span class="t-i">PRESENCE OVER PERFORMANCE</span><span class="t-s"></span>
+      <span class="t-i">REAL ENERGY</span><span class="t-s"></span>
+      <span class="t-i">NO STATUS · NO EGO</span><span class="t-s"></span>
+      <span class="t-i">VANCOUVER CAN DO BETTER</span><span class="t-s"></span>
+      <span class="t-i">GO OUT</span><span class="t-s"></span>
+      <span class="t-i">FEEL GOOD TOMORROW</span><span class="t-s"></span>
+      <span class="t-i">COMMUNITY OVER CLOUT</span><span class="t-s"></span>
+      <span class="t-i">PRESENCE OVER PERFORMANCE</span><span class="t-s"></span>
+      <span class="t-i">REAL ENERGY</span><span class="t-s"></span>
+      <span class="t-i">NO STATUS · NO EGO</span><span class="t-s"></span>
+      <span class="t-i">VANCOUVER CAN DO BETTER</span><span class="t-s"></span>
+    </div>
+  </div>
+
+  <div class="events-wrap">
+    <div class="sec-head"><div class="sec-title">UPCOMING</div><div class="sec-meta">Vancouver, BC · 2026</div></div>
+    <div class="events-grid">
+      <div class="ec ec-main">
+        <div class="ec-vis">
+          <div class="ec-bg" style="background:linear-gradient(150deg,#1A0000,#0D0000,#080808)"></div>
+          <div class="ec-stamp">001</div><div class="ec-hl"></div>
+          <div class="ec-tag">TECHNO · INAUGURAL</div>
+        </div>
+        <div class="ec-body">
+          <div><div class="ec-name">WEAREUAND 001</div><div class="ec-detail">SAT 14 JUN 2026 · EAST VANCOUVER · 22:00 → 06:00</div></div>
+          <div class="ec-right"><div class="ec-price">$25</div><button class="ec-btn" onclick="t('Tickets dropping soon')">Get tickets →</button></div>
+        </div>
+      </div>
+      <div class="ec-sides">
+        <div class="ec ec-side">
+          <div class="ec-vis"><div class="ec-bg" style="background:linear-gradient(150deg,#100005,#0D0008,#080808)"></div><div class="ec-stamp" style="font-size:80px">WRM</div><div class="ec-hl"></div><div class="ec-tag">HOUSE</div></div>
+          <div class="ec-body"><div class="ec-name-sm">WARMTH VOL. 1</div><div class="ec-detail">FRI 28 JUN · DOWNTOWN</div><div class="ec-side-foot"><div class="ec-price-sm">$18</div><button class="ec-btn" onclick="t('Tickets dropping soon')">→</button></div></div>
+        </div>
+        <div class="ec ec-side">
+          <div class="ec-vis"><div class="ec-bg" style="background:linear-gradient(150deg,#000A05,#00100A,#080808)"></div><div class="ec-stamp" style="font-size:80px">PRS</div><div class="ec-hl"></div><div class="ec-tag">D&B</div></div>
+          <div class="ec-body"><div class="ec-name-sm">PRESSURE</div><div class="ec-detail">SAT 12 JUL · RICKSHAW</div><div class="ec-side-foot"><div class="ec-price-sm">$20</div><button class="ec-btn" onclick="t('Tickets dropping soon')">→</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="about">
+  <div class="about-hero">
+    <div class="about-bg">NOBOTTLESNOFLEXINGNOVIPNOCLIQUESNOEGOYESCONNECTIONYESMUSICYESMOMENTSYESCOMMUNITY</div>
+    <div class="about-h">WE'RE<br><span class="outline">BUILDING</span><br>SOMETHING<br><span class="red">REAL.</span></div>
+    <div class="about-cols">
+      <div class="about-copy">For 19–27 year olds in Vancouver who are socially hungry but socially tired. Students. New grads. Young professionals. People who want connection without pressure. Energy without ego.</div>
+      <div class="about-copy">A night out that feels worth it — and still feels good tomorrow. No cliques. No flex culture. No pretending. Just open-minded people, real conversations, real memories.</div>
+    </div>
+    <div class="no-yes">
+      <div class="ny no"><div class="ny-line">NO BOTTLES.</div><div class="ny-line">NO FLEXING.</div><div class="ny-line">NO VIP ENERGY.</div><div class="ny-line">NO CLIQUES.</div><div class="ny-line">NO EGO.</div></div>
+      <div class="ny yes"><div class="ny-line">YES CONNECTION.</div><div class="ny-line">YES MUSIC.</div><div class="ny-line">YES MOMENTS.</div><div class="ny-line">YES COMMUNITY.</div><div class="ny-line">YES YOU.</div></div>
+    </div>
+  </div>
+  <div class="team-wrap">
+    <div class="sec-head"><div class="sec-title">THE TEAM</div><div class="sec-meta">U Collective · Est. 2026</div></div>
+    <div class="team-grid">
+      <div class="tc"><div class="tc-vis"><div class="tc-vbg" style="background:linear-gradient(135deg,#1A0000,#080808)"></div><div class="tc-hl"></div><div class="tc-ltr">A</div></div><div class="tc-body"><div class="tc-name">ALEX REYES</div><div class="tc-role">Co-Founder · Creative Director</div><div class="tc-bio">Vision, brand, culture. Former graphic designer turned event architect.</div></div></div>
+      <div class="tc"><div class="tc-vis"><div class="tc-vbg" style="background:linear-gradient(135deg,#00050A,#080808)"></div><div class="tc-hl"></div><div class="tc-ltr">J</div></div><div class="tc-body"><div class="tc-name">JORDAN KIM</div><div class="tc-role">Co-Founder · Operations</div><div class="tc-bio">Makes sure the night runs smooth so everyone else can lose themselves.</div></div></div>
+      <div class="tc"><div class="tc-vis"><div class="tc-vbg" style="background:linear-gradient(135deg,#050A00,#080808)"></div><div class="tc-hl"></div><div class="tc-ltr">S</div></div><div class="tc-body"><div class="tc-name">SAM OKAFOR</div><div class="tc-role">Head of Music · Talent</div><div class="tc-bio">10 years in Vancouver's underground. If a name is on the lineup, Sam vetted it.</div></div></div>
+      <div class="tc"><div class="tc-vis"><div class="tc-vbg" style="background:linear-gradient(135deg,#0A0005,#080808)"></div><div class="tc-hl"></div><div class="tc-ltr">M</div></div><div class="tc-body"><div class="tc-name">MIA CHEN</div><div class="tc-role">Head of Community</div><div class="tc-bio">Builds the culture before the event even happens.</div></div></div>
+      <div class="tc"><div class="tc-vis"><div class="tc-vbg" style="background:linear-gradient(135deg,#0A0800,#080808)"></div><div class="tc-hl"></div><div class="tc-ltr">T</div></div><div class="tc-body"><div class="tc-name">TYLER BRASS</div><div class="tc-role">Marketing · Social</div><div class="tc-bio">Guerrilla tactics, candid shots. Making sure Vancouver can't scroll past us.</div></div></div>
+      <div class="tc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;border-style:dashed;cursor:pointer" onclick="t('Applications open soon')"><div class="ac-plus">+</div><div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.05em;margin-top:6px">JOIN THE TEAM</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAMERA -->
+<div class="page" id="camera">
+  <div class="cam-hero">
+    <div class="cam-h">CAUGHT<br><span class="outline">ON</span><br><span class="red">CAMERA.</span></div>
+    <div class="cam-sub">Real moments · Real people · No filters</div>
+  </div>
+  <div class="filter-row">
+    <button class="fc on" onclick="cf(this,'all')">All</button>
+    <button class="fc" onclick="cf(this,'u001')">U001</button>
+    <button class="fc" onclick="cf(this,'warmth')">Warmth</button>
+    <button class="fc" onclick="cf(this,'pressure')">Pressure</button>
+    <button class="fc" onclick="cf(this,'bts')">BTS</button>
+  </div>
+  <div class="masonry">
+    <div class="mc" data-ev="u001"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#200000,#0D0000,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">U001 · Jun 14</div><div class="mc-evt">DANCE FLOOR 01:30</div></div></div>
+    <div class="mc" data-ev="warmth"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#100008,#180010,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">Warmth · Jun 28</div><div class="mc-evt">CROWD ENERGY</div></div></div>
+    <div class="mc" data-ev="bts"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#001008,#001A0A,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">BTS · Setup</div><div class="mc-evt">SOUNDCHECK</div></div></div>
+    <div class="mc" data-ev="pressure"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#080018,#0A0020,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">Pressure · Jul 12</div><div class="mc-evt">DJ BOOTH</div></div></div>
+    <div class="mc" data-ev="u001"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#1A0000,#100000,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">U001 · Jun 14</div><div class="mc-evt">HEADLINER SET</div></div></div>
+    <div class="mc" data-ev="warmth"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#0A0A00,#120E00,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">Warmth · Jun 28</div><div class="mc-evt">CONNECTIONS</div></div></div>
+    <div class="mc" data-ev="bts"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#100000,#0D0005,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">BTS · Pre-event</div><div class="mc-evt">PRE-EVENT</div></div></div>
+    <div class="mc" data-ev="u001"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#000A10,#001018,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">U001 · Jun 14</div><div class="mc-evt">MIDNIGHT</div></div></div>
+    <div class="mc" data-ev="pressure"><div class="mc-inner"><div class="mc-bg" style="background:linear-gradient(160deg,#080800,#0E0E00,#080808)"></div><div class="mc-hl"></div><div class="mc-ov"><div class="mc-ov-txt">VIEW</div></div><div class="mc-meta">Pressure · Jul 12</div><div class="mc-evt">PEAK HOUR</div></div></div>
+  </div>
+</div>
+
+<!-- REWARDS -->
+<div class="page" id="rewards">
+  <div class="rw-hero">
+    <div class="rw-stamp">U</div>
+    <div class="rw-h">PUTTING<br>THE FOCUS<br><span class="red">ON U.</span></div>
+    <div class="rw-sub">Every time you show up, we notice. Check in, earn points, unlock perks.</div>
+  </div>
+  <div style="padding:0 40px 24px"><div class="sec-head"><div class="sec-title">LOYALTY TIERS</div><div class="sec-meta">Auto-upgrades as you attend</div></div></div>
+  <div class="tiers">
+    <div class="tier"><div class="tier-num">01</div><div class="tier-name">NEWCOMER</div><div class="tier-req">0–2 events</div><div class="tier-perk">10% off your next ticket</div><div class="tier-perk">Early access announcements</div><div class="tier-perk">U newsletter</div></div>
+    <div class="tier feat"><div class="tier-badge">Most popular</div><div class="tier-num">02</div><div class="tier-name">REGULAR</div><div class="tier-req">3–7 events</div><div class="tier-perk">10% off every ticket</div><div class="tier-perk">1 free ticket after 5 events</div><div class="tier-perk">Line skip at door</div><div class="tier-perk">Guestlist priority</div><div class="tier-perk">15% merch discount</div></div>
+    <div class="tier"><div class="tier-num">03</div><div class="tier-name">INNER CIRCLE</div><div class="tier-req">8+ events</div><div class="tier-perk">Free ticket every 8th event</div><div class="tier-perk">Permanent line skip</div><div class="tier-perk">Artist meet & greets</div><div class="tier-perk">20% merch discount</div><div class="tier-perk">Vote on lineups</div></div>
+  </div>
+  <div class="rw-bot">
+    <div>
+      <div style="font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,237,230,.25);margin-bottom:14px">Member card</div>
+      <div class="member-card"><div class="mc2-bg"></div><div class="mc2-u">U</div><div class="mc2-brand">WEAREUAND</div><div class="mc2-name">JAMIE SANTOS</div><div class="mc2-tier">REGULAR · Since Mar 2026</div><div class="mc2-row"><div><div class="mc2-lbl">Events attended</div><div class="mc2-val">5</div></div><div style="text-align:right"><div class="mc2-lbl">Next reward</div><div class="mc2-next">FREE TICKET</div></div></div></div>
+    </div>
+    <div class="ci-box">
+      <div class="ci-title">CHECK IN AT THE DOOR</div>
+      <div class="ci-row"><label class="ci-label">Full name</label><input class="ci-input" id="ci-n" placeholder="Your name" type="text"></div>
+      <div class="ci-row"><label class="ci-label">Email</label><input class="ci-input" id="ci-e" placeholder="you@email.com" type="email"></div>
+      <div class="ci-row"><label class="ci-label">Event</label><select class="ci-select"><option>WEAREUAND 001 — Jun 14</option><option>WARMTH Vol. 1 — Jun 28</option><option>PRESSURE — Jul 12</option></select></div>
+      <button class="ci-btn" onclick="doCI()">CHECK IN + EARN POINTS →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARTISTS -->
+<div class="page" id="artists">
+  <div class="ar-hero">
+    <div class="ar-h">UNDER<br><span class="outline">THE</span><br><span class="red">U FLAG.</span></div>
+    <div class="ar-sub">DJs and artists managed, promoted, and booked through WEAREUAND</div>
+  </div>
+  <div class="roster">
+    <div class="ac feat"><div class="ac-vis"><div class="ac-bg" style="background:linear-gradient(135deg,#300060,#1a0040,#080808)"></div><div class="ac-hl"></div><div class="ac-u">U</div><div class="ac-tag">FEATURED · TECHNO</div></div><div class="ac-body"><div class="ac-name">KIRA VOSS</div><div class="ac-genre">Techno · Industrial · Peak Hour</div><div class="ac-stats"><div><div class="ac-sv">48</div><div class="ac-sl">Shows</div></div><div><div class="ac-sv">12K</div><div class="ac-sl">Followers</div></div><div><div class="ac-sv">$400</div><div class="ac-sl">Rate</div></div></div><div class="ac-btns"><button class="ac-btn book" onclick="t('Booking inquiry sent')">Book now</button><button class="ac-btn kit" onclick="t('Press kit downloaded')">Press kit</button></div></div></div>
+    <div class="ac"><div class="ac-vis"><div class="ac-bg" style="background:linear-gradient(135deg,#000818,#000510,#080808)"></div><div class="ac-hl"></div><div class="ac-u">U</div><div class="ac-tag">HOUSE</div></div><div class="ac-body"><div class="ac-name">DJ MARLOW</div><div class="ac-genre">House · Deep · Afro</div><div class="ac-stats"><div><div class="ac-sv">31</div><div class="ac-sl">Shows</div></div><div><div class="ac-sv">$250</div><div class="ac-sl">Rate</div></div></div><div class="ac-btns"><button class="ac-btn book" onclick="t('Booking → DJ Marlow')">Book</button><button class="ac-btn kit" onclick="t('Kit')">Kit</button></div></div></div>
+    <div class="ac"><div class="ac-vis"><div class="ac-bg" style="background:linear-gradient(135deg,#080008,#050012,#080808)"></div><div class="ac-hl"></div><div class="ac-u">U</div><div class="ac-tag">D&B</div></div><div class="ac-body"><div class="ac-name">SOLÈNE</div><div class="ac-genre">Drum & Bass · Liquid</div><div class="ac-stats"><div><div class="ac-sv">19</div><div class="ac-sl">Shows</div></div><div><div class="ac-sv">$200</div><div class="ac-sl">Rate</div></div></div><div class="ac-btns"><button class="ac-btn book" onclick="t('Booking → Solène')">Book</button><button class="ac-btn kit" onclick="t('Kit')">Kit</button></div></div></div>
+  </div>
+  <div class="roster2" style="margin-top:2px">
+    <div class="ac"><div class="ac-vis" style="height:160px"><div class="ac-bg" style="background:linear-gradient(135deg,#080008,#100010,#080808)"></div><div class="ac-hl"></div><div class="ac-u">U</div><div class="ac-tag">AMBIENT</div></div><div class="ac-body"><div class="ac-name">MAST</div><div class="ac-genre">Ambient · Experimental</div><div class="ac-stats"><div><div class="ac-sv">8</div><div class="ac-sl">Shows</div></div><div><div class="ac-sv">$150</div><div class="ac-sl">Rate</div></div></div><div class="ac-btns"><button class="ac-btn book" onclick="t('Booking → MAST')">Book</button><button class="ac-btn kit" onclick="t('Kit')">Kit</button></div></div></div>
+    <div class="ac"><div class="ac-vis" style="height:160px"><div class="ac-bg" style="background:linear-gradient(135deg,#001008,#001A0A,#080808)"></div><div class="ac-hl"></div><div class="ac-u">U</div><div class="ac-tag">AFROBEATS</div></div><div class="ac-body"><div class="ac-name">KOFI J</div><div class="ac-genre">Afrobeats · Amapiano</div><div class="ac-stats"><div><div class="ac-sv">14</div><div class="ac-sl">Shows</div></div><div><div class="ac-sv">$180</div><div class="ac-sl">Rate</div></div></div><div class="ac-btns"><button class="ac-btn book" onclick="t('Booking → Kofi J')">Book</button><button class="ac-btn kit" onclick="t('Kit')">Kit</button></div></div></div>
+    <div class="ac ac-empty" onclick="t('Artist platform launching Q3 2026')"><div class="ac-plus">+</div><div class="ac-plus-lbl">YOUR NAME HERE</div><div class="ac-plus-sub">Join the platform</div></div>
+  </div>
+  <div class="ai-wrap">
+    <div class="ai-box">
+      <div class="ai-title">AI BOOKING OUTREACH SYSTEM</div>
+      <div class="ai-desc">Upload your rider, press kit, and bio. The system identifies matching venues and sends personalised outreach on your behalf.</div>
+      <div class="ai-flow">
+        <div class="ai-step"><div class="ai-n">01</div><div class="ai-t">UPLOAD KIT</div><div class="ai-d">Press kit, rider, mix, social links</div><div class="ai-arr">→</div></div>
+        <div class="ai-step"><div class="ai-n">02</div><div class="ai-t">AI MATCHES</div><div class="ai-d">Finds venues for your sound</div><div class="ai-arr">→</div></div>
+        <div class="ai-step"><div class="ai-n">03</div><div class="ai-t">OUTREACH</div><div class="ai-d">Personalised pitches sent automatically</div><div class="ai-arr">→</div></div>
+        <div class="ai-step"><div class="ai-n">04</div><div class="ai-t">BOOKED</div><div class="ai-d">Manage responses from your dashboard</div></div>
+      </div>
+      <button class="ci-btn" style="max-width:260px;border-radius:100px" onclick="t('Launching Q3 2026')">UPLOAD PRESS KIT →</button>
+    </div>
+  </div>
+  <div class="sub-wrap">
+    <div class="sub"><div class="sub-price">$49</div><div class="sub-per">per month</div><div class="sub-name">ARTIST STARTER</div><div class="sub-desc">For emerging DJs who want bookings.</div><div class="sub-feat">Profile listing on platform</div><div class="sub-feat">AI outreach — 20 pitches/mo</div><div class="sub-feat">Press kit hosting</div><div class="sub-feat">1 event feature per season</div><button class="sub-btn" onclick="t('Starter — opening Q3 2026')">Get started →</button></div>
+    <div class="sub feat"><div class="sub-price">$129</div><div class="sub-per">per month</div><div class="sub-name">ARTIST PRO</div><div class="sub-desc">Full exposure, unlimited outreach.</div><div class="sub-feat">Featured profile + verified badge</div><div class="sub-feat">Unlimited AI outreach</div><div class="sub-feat">Priority on WEAREUAND events</div><div class="sub-feat">Rider + contract templates</div><div class="sub-feat">Monthly analytics</div><div class="sub-feat">Revenue split on ticket sales</div><button class="sub-btn" onclick="t('Pro — opening Q3 2026')">Get started →</button></div>
+  </div>
+</div>
+
+<script>
+function go(id, btn){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.nav-icon-btn').forEach(b => b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+function cf(btn,f){
+  document.querySelectorAll('.fc').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.mc').forEach(c => {
+    c.style.display = (f==='all' || c.dataset.ev===f) ? '' : 'none';
+  });
+}
+function doCI(){
+  var n=document.getElementById('ci-n').value;
+  var e=document.getElementById('ci-e').value;
+  if(!n||!e){t('Fill in your name and email');return;}
+  t('✓ '+n.split(' ')[0]+' checked in · 10% off applied');
+  document.getElementById('ci-n').value='';
+  document.getElementById('ci-e').value='';
+}
+function t(m){
+  var el=document.getElementById('toast');
+  el.textContent=m;el.classList.add('on');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2800);
+}
+</script>

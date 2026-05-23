@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --color-uand-red: #c21200;
+  --color-uand-black: #000000;
+  --color-uand-white: #ffffff;
+  --color-uand-blue: #003142;
+  --color-uand-mustard: #f7c700;
+  --color-uand-oxblood: #3d0814;
+
+  --font-display: var(--font-display);
+  --font-script: var(--font-script);
+  --font-warped: var(--font-warped);
+  --font-graffiti: var(--font-graffiti);
+  --font-body: var(--font-body);
+}
+
+html,
+body {
+  background: var(--color-uand-red);
+  color: var(--color-uand-black);
+  font-family: var(--font-body), -apple-system, Helvetica, Arial, sans-serif;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: #000;
+  color: var(--color-uand-red);
+}
+
+/* Grain overlay — required by brand */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.85 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* halftone dot mask */
+.halftone {
+  background-image: radial-gradient(
+    circle at center,
+    currentColor 22%,
+    transparent 24%
+  );
+  background-size: 6px 6px;
+}
+
+/* marquee */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+.marquee-track.fast { animation-duration: 14s; }
+.marquee-track.reverse { animation-direction: reverse; }
+
+/* CRT scan flicker */
+@keyframes flicker {
+  0%,100% { opacity: 1; }
+  47% { opacity: 1; }
+  48% { opacity: 0.4; }
+  49% { opacity: 1; }
+  88% { opacity: 1; }
+  89% { opacity: 0.7; }
+  90% { opacity: 1; }
+}
+.flicker { animation: flicker 4s infinite; }
+
+@keyframes camera-flash {
+  0% { opacity: 0; }
+  4% { opacity: 1; }
+  10% { opacity: 0; }
+  100% { opacity: 0; }
+}
+.flash-on-mount {
+  animation: camera-flash 700ms ease-out 1;
+}
+
+@keyframes hard-shake {
+  0%,100% { transform: translate(0,0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-1px, -2px); }
+}
+
+/* warped text "Botch" substitute */
+.warp {
+  font-family: var(--font-warped), Impact, sans-serif;
+  letter-spacing: -0.02em;
+  font-stretch: 125%;
+  transform: scaleY(1.15) scaleX(0.95);
+  transform-origin: center;
+}
+
+.display { font-family: var(--font-display), Impact, "Arial Narrow", sans-serif; letter-spacing: -0.01em; }
+.script  { font-family: var(--font-script), "Brush Script MT", cursive; }
+.graf    { font-family: var(--font-graffiti), "Comic Sans MS", cursive; }
+
+/* tighten huge type */
+.tight { line-height: 0.82; letter-spacing: -0.04em; }
+.tighter { line-height: 0.78; letter-spacing: -0.05em; }
+
+/* outline type */
+.outline-type {
+  -webkit-text-stroke: 2px currentColor;
+  color: transparent;
+}
+
+/* hide native cursor when custom cursor active */
+.cursor-none, .cursor-none * { cursor: none !important; }
