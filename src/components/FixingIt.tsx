@@ -1,7 +1,26 @@
 "use client";
 
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { UMark } from "./UMark";
+
+function LineContent({ repeat }: { repeat: number }) {
+  const parts = "VANCOUVER NIGHTLIFE IS DEAD ".split("U");
+  return (
+    <>
+      {Array.from({ length: repeat }).map((_, r) => (
+        <Fragment key={r}>
+          {parts.map((p, i) => (
+            <Fragment key={i}>
+              {p}
+              {i < parts.length - 1 && <UMark size="0.85em" />}
+            </Fragment>
+          ))}
+        </Fragment>
+      ))}
+    </>
+  );
+}
 
 export function FixingIt() {
   const ref = useRef<HTMLDivElement>(null);
@@ -12,19 +31,18 @@ export function FixingIt() {
   const x = useTransform(scrollYProgress, [0, 1], ["20%", "-30%"]);
   const fixScale = useTransform(scrollYProgress, [0.2, 0.7], [0.7, 1.2]);
 
-  const line = "VANCOUVER NIGHTLIFE IS DEAD ";
   return (
     <section
       ref={ref}
       className="relative h-[80vh] overflow-hidden bg-[var(--color-uand-red)]"
     >
-      <motion.div style={{ x }} className="absolute inset-0 flex flex-col justify-center gap-2">
-        {Array.from({ length: 9 }).map((_, i) => (
+      <motion.div style={{ x }} className="absolute inset-0 flex flex-col justify-center gap-1">
+        {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="display tighter whitespace-nowrap text-[12vw] leading-[0.9] text-black/60"
+            className="display tighter whitespace-nowrap text-[18vh] leading-[0.9] text-black/60"
           >
-            {line.repeat(8)}
+            <LineContent repeat={8} />
           </div>
         ))}
       </motion.div>
