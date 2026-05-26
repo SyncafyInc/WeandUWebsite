@@ -73,8 +73,8 @@ export function FlashHero({ photos }: Props) {
         <div className="absolute inset-0 bg-[var(--color-uand-red)]/30" />
       </motion.div>
 
-      {/* boot flash */}
-      {!booted && (
+      {/* boot flash — disabled */}
+      {false && !booted && (
         <div className="pointer-events-none absolute inset-0 z-50 flash-on-mount bg-white" />
       )}
 
