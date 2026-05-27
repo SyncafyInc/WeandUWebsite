@@ -1,4 +1,5 @@
-import { Anton, Allura, Bowlby_One, Permanent_Marker, Inter } from "next/font/google";
+import { Anton, Bowlby_One, Permanent_Marker, Inter } from "next/font/google";
+import localFont from "next/font/local";
 
 export const display = Anton({
   subsets: ["latin"],
@@ -6,9 +7,8 @@ export const display = Anton({
   variable: "--font-display",
 });
 
-export const script = Allura({
-  subsets: ["latin"],
-  weight: "400",
+export const script = localFont({
+  src: "../../public/fonts/BirdsOfParadise.ttf",
   variable: "--font-script",
 });
 
