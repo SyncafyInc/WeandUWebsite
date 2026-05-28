@@ -30,7 +30,12 @@ export function Footer() {
           </p>
           <ul className="mt-10 grid grid-cols-2 gap-3 text-sm font-bold tracking-widest">
             <li>
-              <a className="border-b border-white pb-1 inline-flex items-baseline gap-[0.1em]" href="#">
+              <a
+                className="border-b border-white pb-1 inline-flex items-baseline gap-[0.1em]"
+                href="https://www.instagram.com/weareuand/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 @WEARE<UMark />AND
               </a>
             </li>
