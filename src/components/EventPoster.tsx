@@ -104,12 +104,22 @@ export function EventPoster() {
             </li>
           </ul>
 
-          <a
-            href="#rsvp"
-            className="mt-8 inline-block border-2 border-white bg-[var(--color-uand-red)] px-8 py-4 text-lg font-black tracking-widest transition hover:bg-white hover:text-black"
-          >
-            RSVP / TAP IN
-          </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href="https://www.ticketweb.ca/event/kick-ff-celebrities-nightclub-tickets/14951263?pl=blueprint~"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block border-2 border-white bg-white px-8 py-4 text-lg font-black tracking-widest text-black transition hover:bg-[var(--color-uand-red)] hover:text-white"
+            >
+              BUY TICKETS
+            </a>
+            <a
+              href="#rsvp"
+              className="inline-block border-2 border-white bg-[var(--color-uand-red)] px-8 py-4 text-lg font-black tracking-widest transition hover:bg-white hover:text-black"
+            >
+              RSVP / TAP IN
+            </a>
+          </div>
         </div>
       </div>
     </section>
