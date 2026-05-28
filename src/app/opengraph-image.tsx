@@ -82,50 +82,6 @@ export default async function OpengraphImage() {
           <img src={iconSrc} width={480} height={480} alt="" style={{ filter: "brightness(0) invert(1)" }} />
         </div>
 
-        {/* top meta */}
-        <div
-          style={{
-            position: "absolute",
-            top: 56,
-            left: 80,
-            right: 80,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            fontSize: 22,
-            fontWeight: 900,
-            letterSpacing: "0.2em",
-            zIndex: 10,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <img src={iconSrc} width={48} height={48} alt="" />
-            <span>2026</span>
-          </div>
-          <span>LIVE / VANCOUVER</span>
-        </div>
-
-        {/* bottom meta */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 56,
-            left: 80,
-            right: 80,
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: 22,
-            fontWeight: 900,
-            letterSpacing: "0.2em",
-            zIndex: 10,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span>BRINGING BACK THE FOCUS ON</span>
-            <img src={iconSrc} width={28} height={28} alt="" />
-          </div>
-          <span>KICK OFF · 06.18.2026</span>
-        </div>
       </div>
     ),
     { ...size }
