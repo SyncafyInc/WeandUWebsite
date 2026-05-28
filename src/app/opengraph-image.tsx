@@ -46,34 +46,12 @@ export default async function OpengraphImage() {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            marginTop: "auto",
-            lineHeight: 0.85,
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <div
-            style={{
-              fontSize: 260,
-              fontWeight: 900,
-              letterSpacing: "-0.06em",
-              display: "flex",
-            }}
-          >
-            WEARE
-          </div>
-          <div
-            style={{
-              fontSize: 260,
-              fontWeight: 900,
-              letterSpacing: "-0.06em",
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-            }}
-          >
-            <img src={iconSrc} width={210} height={210} alt="" />
-            <span>AND</span>
-          </div>
+          <img src={iconSrc} width={420} height={420} alt="" />
         </div>
 
         <div
