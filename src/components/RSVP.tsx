@@ -1,15 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { KickOffTakeover } from "./KickOffTakeover";
 
 export function RSVP() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const addEmail = useMutation(api.rsvps.addEmail);
 
   return (
     <section
       id="rsvp"
-      className="relative bg-[var(--color-uand-red)] px-4 py-24 text-black md:px-8 md:py-40"
+      className="relative overflow-hidden bg-[var(--color-uand-red)] px-4 py-24 text-black md:px-8 md:py-40"
     >
       <div className="mb-10 flex items-end justify-between text-[10px] font-bold tracking-widest md:text-xs">
         <span className="display text-base tracking-tight md:text-2xl">TAP IN</span>
@@ -22,10 +28,19 @@ export function RSVP() {
       </h2>
 
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (!email) return;
-          setSent(true);
+          if (!email || submitting) return;
+          setSubmitting(true);
+          setError(null);
+          try {
+            await addEmail({ email });
+            setSent(true);
+          } catch (err) {
+            setError(err instanceof Error ? err.message : "Something went wrong");
+          } finally {
+            setSubmitting(false);
+          }
         }}
         className="mt-12 flex flex-col gap-3 border-y-2 border-black py-6 md:flex-row md:items-center md:gap-6"
       >
@@ -42,17 +57,21 @@ export function RSVP() {
         />
         <button
           type="submit"
-          disabled={sent}
+          disabled={sent || submitting}
           className="bg-black px-8 py-4 text-base font-black tracking-widest text-[var(--color-uand-red)] transition hover:bg-white hover:text-black disabled:opacity-50"
         >
-          {sent ? "YOU'RE IN" : "GET ON THE LIST"}
+          {sent ? "YOU'RE IN" : submitting ? "..." : "GET ON THE LIST"}
         </button>
       </form>
+      {error && (
+        <p className="mt-3 text-sm font-bold tracking-widest text-black">{error.toUpperCase()}</p>
+      )}
 
       <p className="mt-8 max-w-2xl text-sm font-bold tracking-widest md:text-base">
         WE&apos;LL DROP A NOTE THE WEEK OF EVERY EVENT. NO SPAM. NO BS.
-        ONLY NIGHTS THAT DON&apos;T COST YOUR MORNING.
       </p>
+
+      <KickOffTakeover open={sent} onClose={() => setSent(false)} />
     </section>
   );
 }

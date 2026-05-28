@@ -62,7 +62,7 @@ export function Manifesto() {
         <span className="text-[var(--color-uand-red)]">/ MANIFESTO</span>
         <span className="inline-flex items-baseline gap-[0.1em]">EST. <UMark />2026</span>
         <span>VANCOUVER, B.C.</span>
-        <span className="ml-auto inline-flex items-baseline gap-[0.25em]">PUTTING THE FOCUS ON <UMark /></span>
+        <span className="ml-auto inline-flex items-baseline gap-[0.25em]">BRINGING BACK THE FOCUS ON <UMark /></span>
       </div>
     </section>
   );

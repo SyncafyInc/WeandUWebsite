@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:prod": "npx convex deploy --cmd='pnpm build' --yes",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "convex": "^1.39.1",
     "framer-motion": "^12.40.0",
     "next": "^15.1.0",
     "react": "^19.0.0",

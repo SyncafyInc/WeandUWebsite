@@ -1,4 +1,4 @@
-import { getCelebs, getRushHour } from "@/lib/photos";
+import { getCelebs } from "@/lib/photos";
 import { Cursor } from "@/components/Cursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { FlashHero } from "@/components/FlashHero";
@@ -13,35 +13,20 @@ import { UMark } from "@/components/UMark";
 
 export default function Home() {
   const celebs = getCelebs();
-  const rush = getRushHour();
 
   const tickerA = [
     "COME SOLO",
     "LEAVE CONNECTED",
-    "GO OUT",
-    "FEEL GOOD TOMORROW",
-    "NO BOTTLES",
-    "NO FLEXING",
-    "NO EGO",
+    "SONG REQUESTS",
+    "YOUNG LEADERS & CURATORS",
     "YES MUSIC",
     "YES MOMENTS",
   ];
   const tickerB = [
-    <span key="vwu" className="inline-flex items-baseline gap-[0.1em]">
-      VANCO<UMark />VER WAKE <UMark />P
-    </span>,
-    "REAL ENERGY",
-    "REAL MEMORIES",
-    "LOW PRESSURE",
-    "HIGH ENERGY",
-    "COMMUNITY OVER CLOUT",
-    "PRESENCE OVER PERFORMANCE",
-  ];
-  const tickerC = [
-    "NIGHTS THAT DON'T COST YOUR MORNING",
     "WE'RE BRINGING BACK SOCIAL LIFE",
+    "YOUNG LEADERS & CURATORS",
     <span key="focus" className="inline-flex items-baseline gap-[0.25em]">
-      PUTTING THE FOCUS ON <UMark />
+      BRINGING BACK THE FOCUS ON <UMark />
     </span>,
   ];
 
@@ -49,29 +34,31 @@ export default function Home() {
     <main className="grain relative">
       <ScrollProgress />
       <Cursor />
+
+      {/* 1. Opening logo */}
       <FlashHero photos={celebs.slice(0, 40)} />
+
+      {/* 2. Next Event — Kick Off */}
+      <EventPoster />
 
       <div className="bg-black py-4 text-[var(--color-uand-red)]">
         <Marquee items={tickerA} />
       </div>
 
+      {/* 3. Project Overview */}
       <Manifesto />
+
+      {/* 4. This Is A Night */}
+      <PhotoReel photos={celebs} title="THIS IS A NIGHT" sub="from inside the room:" />
 
       <div className="bg-[var(--color-uand-red)] py-4 text-black">
         <Marquee items={tickerB} reverse speed="fast" />
       </div>
 
-      <PhotoReel photos={celebs} title="THIS IS A NIGHT" sub="from inside the room:" />
-
+      {/* 5. Vancouver nightlife → Come Solo, Leave Connected */}
       <FixingIt />
-
-      <EventPoster photos={rush} />
-
-      <div className="bg-black py-4 text-[var(--color-uand-red)]">
-        <Marquee items={tickerC} />
-      </div>
-
       <RSVP />
+
       <Footer />
     </main>
   );

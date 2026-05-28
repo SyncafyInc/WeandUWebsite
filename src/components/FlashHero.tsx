@@ -8,7 +8,7 @@ type Props = { photos: string[] };
 
 const FRAGMENTS = [
   "COME SOLO. LEAVE CONNECTED.",
-  "NO BOTTLES. NO FLEXING. NO VIP.",
+  "YOUNG LEADERS & CURATORS.",
   "MUSIC. PEOPLE. MOMENT.",
   "REAL ENERGY. REAL MEMORIES.",
   "LOW PRESSURE. HIGH ENERGY.",
@@ -17,7 +17,6 @@ const FRAGMENTS = [
 export function FlashHero({ photos }: Props) {
   const [idx, setIdx] = useState(0);
   const [fragIdx, setFragIdx] = useState(0);
-  const [booted, setBooted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -26,7 +25,7 @@ export function FlashHero({ photos }: Props) {
   });
   const yBg = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const scaleBg = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const titleY = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const markY = useTransform(scrollYProgress, [0, 1], [0, -120]);
 
   useEffect(() => {
     if (photos.length === 0) return;
@@ -39,11 +38,6 @@ export function FlashHero({ photos }: Props) {
   useEffect(() => {
     const id = setInterval(() => setFragIdx((i) => (i + 1) % FRAGMENTS.length), 2400);
     return () => clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    const t = setTimeout(() => setBooted(true), 700);
-    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -73,41 +67,36 @@ export function FlashHero({ photos }: Props) {
         <div className="absolute inset-0 bg-[var(--color-uand-red)]/30" />
       </motion.div>
 
-      {/* boot flash — disabled */}
-      {false && !booted && (
-        <div className="pointer-events-none absolute inset-0 z-50 flash-on-mount bg-white" />
-      )}
+      {/* giant Ü bleeding off the right */}
+      <motion.div
+        style={{ y: markY, mixBlendMode: "difference" }}
+        aria-hidden
+        className="pointer-events-none absolute -bottom-[5%] -right-[8%] z-10 h-[85%] w-[55%] md:-right-[5%] md:w-[42%]"
+      >
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundColor: "white",
+            WebkitMaskImage: "url(/logo/u-icon.png)",
+            maskImage: "url(/logo/u-icon.png)",
+            WebkitMaskSize: "contain",
+            maskSize: "contain",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+          }}
+        />
+      </motion.div>
 
       {/* corner meta */}
       <div className="absolute left-4 top-4 z-20 flex items-center gap-3 text-[11px] font-bold tracking-widest md:left-8 md:top-6">
         <span className="display text-xl md:text-2xl inline-flex items-baseline gap-[0.05em]"><UMark />2026</span>
-        <span className="hidden md:inline-flex items-baseline gap-[0.25em]">/ PUTTING THE FOCUS ON <UMark /></span>
+        <span className="hidden md:inline-flex items-baseline gap-[0.25em]">/ BRINGING BACK THE FOCUS ON <UMark /></span>
       </div>
       <div className="absolute right-4 top-4 z-20 text-[11px] font-bold tracking-widest md:right-8 md:top-6">
         <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-black align-middle" />{" "}
         LIVE / VANCOUVER
-      </div>
-
-      {/* giant background brand type — bleeds off */}
-      <motion.div
-        style={{ y: titleY }}
-        className="absolute inset-0 z-10 flex flex-col items-center justify-center"
-      >
-        <h1 className="display tighter text-center text-[28vw] leading-[0.78] md:text-[20vw]">
-          <span className="block -mb-[3vw]">WEARE</span>
-          <span className="block inline-flex items-baseline justify-center gap-[0.02em]">
-            <UMark size="0.82em" />
-            <span>AND</span>
-          </span>
-        </h1>
-      </motion.div>
-
-      {/* halftone Ü silhouette ghost */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-10 right-[-6%] z-[5] h-[80%] w-[55%] opacity-30 md:opacity-50"
-      >
-        <img src="/logo/u-icon.png" alt="" className="h-full w-full object-contain mix-blend-multiply" />
       </div>
 
       {/* rotating fragment */}
@@ -117,10 +106,8 @@ export function FlashHero({ photos }: Props) {
         </p>
       </div>
 
-      {/* footer fragment ticker baseline */}
       <div className="absolute bottom-4 left-4 right-4 z-20 flex items-end justify-between text-[10px] font-bold tracking-widest md:bottom-6 md:left-8 md:right-8 md:text-xs">
         <span>SOCIALLY HUNGRY · SOCIALLY TIRED</span>
-        <span className="hidden md:inline">GO OUT · FEEL GOOD TOMORROW</span>
         <span>SCROLL ↓</span>
       </div>
     </section>

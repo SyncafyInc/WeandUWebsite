@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { body, display, script, warped, graffiti } from "@/lib/fonts";
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "WEAREÜAND — VANCOUVER, WAKE UP",
   description:
-    "Socially hungry but socially tired. No bottles. No flexing. No VIP. Yes connection, yes music, yes community. We're fixing Vancouver nightlife.",
+    "Young leaders & curators. Bringing back the focus on Ü.",
 };
 
 export default function RootLayout({
@@ -18,7 +19,9 @@ export default function RootLayout({
       lang="en"
       className={`${body.variable} ${display.variable} ${script.variable} ${warped.variable} ${graffiti.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
+      </body>
     </html>
   );
 }

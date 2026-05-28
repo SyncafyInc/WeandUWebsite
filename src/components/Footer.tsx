@@ -23,9 +23,6 @@ export function Footer() {
           />
         </div>
         <div className="md:col-span-5">
-          <p className="warp text-[var(--color-uand-red)] text-5xl leading-none md:text-7xl inline-flex items-baseline gap-[0.05em]">
-            ST<UMark />DIO
-          </p>
           <p className="mt-6 max-w-md text-sm font-bold leading-relaxed tracking-widest md:text-base">
             VANCOUVER NIGHTLIFE IS DEAD. WE&apos;RE FIXING IT.
             LOW PRESSURE, HIGH ENERGY SOCIAL SPACES
@@ -46,7 +43,7 @@ export function Footer() {
       <div className="mt-16 flex items-center justify-between border-t border-white/20 pt-6 text-[10px] font-bold tracking-widest md:text-xs">
         <span className="inline-flex items-baseline gap-[0.15em]">© <UMark />2026</span>
         <span>VANCOUVER, B.C.</span>
-        <span className="inline-flex items-baseline gap-[0.25em]">PUTTING THE FOCUS ON <UMark /></span>
+        <span className="inline-flex items-baseline gap-[0.25em]">BRINGING BACK THE FOCUS ON <UMark /></span>
       </div>
     </footer>
   );
