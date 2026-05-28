@@ -68,6 +68,9 @@ export function RSVP() {
       )}
 
       <p className="mt-8 max-w-2xl text-sm font-bold tracking-widest md:text-base">
+        GET A CHANCE TO WIN DISCOUNTS, GUESTLIST, BACKSTAGE ACCESS AND MORE.
+      </p>
+      <p className="mt-3 max-w-2xl text-sm font-bold tracking-widest md:text-base">
         WE&apos;LL DROP A NOTE THE WEEK OF EVERY EVENT. NO SPAM. NO BS.
       </p>
 

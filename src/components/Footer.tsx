@@ -39,9 +39,12 @@ export function Footer() {
                 @WEARE<UMark />AND
               </a>
             </li>
-            <li><a className="border-b border-white pb-1" href="#">TIKTOK</a></li>
-            <li><a className="border-b border-white pb-1" href="#">DISCORD</a></li>
             <li><a className="border-b border-white pb-1" href="#rsvp">RSVP</a></li>
+            <li>
+              <a className="border-b border-white pb-1" href="mailto:partners@weareuand.com">
+                PARTNERS@WEAREUAND.COM
+              </a>
+            </li>
           </ul>
         </div>
       </div>

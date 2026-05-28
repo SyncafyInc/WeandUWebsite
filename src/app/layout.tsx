@@ -3,9 +3,17 @@ import { body, display, script, warped, graffiti } from "@/lib/fonts";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import "./globals.css";
 
+function normalizeUrl(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  const trimmed = raw.trim().replace(/\/+$/, "");
+  if (!trimmed) return undefined;
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+}
+
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://weand-u-website.vercel.app");
+  normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL) ??
+  normalizeUrl(process.env.VERCEL_URL) ??
+  "https://weand-u-website.vercel.app";
 
 const title = "WEAREÜAND — VANCOUVER, WAKE UP";
 const description = "Young leaders & curators. Bringing back the focus on Ü.";
