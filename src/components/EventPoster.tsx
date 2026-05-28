@@ -5,7 +5,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { UMark } from "./UMark";
 
 const TARGET = new Date("2026-06-18T22:00:00-07:00").getTime();
-const POSTER_VIDEO = encodeURI("/KICKOFF/BG NO FONT W TEXTURE PNG VER.MOV");
+const POSTER_VIDEO_MP4 = encodeURI("/KICKOFF/BG NO FONT W TEXTURE PNG VER.mp4");
+const POSTER_VIDEO_MOV = encodeURI("/KICKOFF/BG NO FONT W TEXTURE PNG VER.MOV");
 const POSTER_POSTER = encodeURI("/KICKOFF/BG NO FONT W TEXTURE PNG VER.png");
 const BG = encodeURI("/KICKOFF/KO_BG.png w textures and splatter.png");
 
@@ -58,7 +59,6 @@ export function EventPoster() {
         {/* kickoff poster */}
         <div className="col-span-1 flex justify-center md:col-span-7">
           <video
-            src={POSTER_VIDEO}
             poster={POSTER_POSTER}
             autoPlay
             muted
@@ -66,7 +66,11 @@ export function EventPoster() {
             playsInline
             preload="metadata"
             className="block w-auto max-w-full border-2 border-white bg-black max-h-[70vh] md:max-h-[80vh]"
-          />
+          >
+            <source src={POSTER_VIDEO_MP4} type="video/mp4" />
+            <source src={POSTER_VIDEO_MOV} type="video/quicktime" />
+            <img src={POSTER_POSTER} alt="Kick Off" />
+          </video>
         </div>
 
         {/* meta column */}
