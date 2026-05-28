@@ -5,7 +5,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { UMark } from "./UMark";
 
 const TARGET = new Date("2026-06-18T22:00:00-07:00").getTime();
-const POSTER = encodeURI("/KICKOFF/KICK OFF PNG VER.png");
+const POSTER_VIDEO = encodeURI("/KICKOFF/BG NO FONT W TEXTURE PNG VER.MOV");
+const POSTER_POSTER = encodeURI("/KICKOFF/BG NO FONT W TEXTURE PNG VER.png");
 const BG = encodeURI("/KICKOFF/KO_BG.png w textures and splatter.png");
 
 function useCountdown() {
@@ -56,9 +57,14 @@ export function EventPoster() {
       <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-8">
         {/* kickoff poster */}
         <div className="col-span-1 flex justify-center md:col-span-7">
-          <img
-            src={POSTER}
-            alt="Kick Off"
+          <video
+            src={POSTER_VIDEO}
+            poster={POSTER_POSTER}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
             className="block w-auto max-w-full border-2 border-white bg-black max-h-[70vh] md:max-h-[80vh]"
           />
         </div>
