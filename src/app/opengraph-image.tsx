@@ -74,8 +74,9 @@ export default async function OpengraphImage() {
             position: "absolute",
             inset: 0,
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-end",
             justifyContent: "center",
+            paddingBottom: 40,
             mixBlendMode: "difference",
           }}
         >
