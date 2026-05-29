@@ -127,7 +127,7 @@ export function EventPoster() {
               href="#rsvp"
               className="inline-block border-2 border-white bg-[var(--color-uand-red)] px-8 py-4 text-lg font-black tracking-widest transition hover:bg-white hover:text-black"
             >
-              RSVP / TAP IN
+              STAY UPDATED
             </a>
           </div>
         </div>

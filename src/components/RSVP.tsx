@@ -18,7 +18,7 @@ export function RSVP() {
       className="relative overflow-hidden bg-[var(--color-uand-red)] px-4 py-24 text-black md:px-8 md:py-40"
     >
       <div className="mb-10 flex items-end justify-between text-[10px] font-bold tracking-widest md:text-xs">
-        <span className="display text-base tracking-tight md:text-2xl">TAP IN</span>
+        <span className="display text-base tracking-tight md:text-2xl">STAY UPDATED</span>
         <span>06 / 06</span>
       </div>
 
@@ -60,7 +60,7 @@ export function RSVP() {
           disabled={sent || submitting}
           className="bg-black px-8 py-4 text-base font-black tracking-widest text-[var(--color-uand-red)] transition hover:bg-white hover:text-black disabled:opacity-50"
         >
-          {sent ? "YOU'RE IN" : submitting ? "..." : "GET ON THE LIST"}
+          {sent ? "SUBSCRIBED" : submitting ? "..." : "NOTIFY ME"}
         </button>
       </form>
       {error && (
