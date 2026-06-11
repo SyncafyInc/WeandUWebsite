@@ -1,5 +1,6 @@
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 export const addEmail = mutation({
   args: { email: v.string() },
@@ -14,6 +15,9 @@ export const addEmail = mutation({
       .unique();
     if (existing) return { ok: true, duplicate: true as const };
     await ctx.db.insert("rsvps", { email: normalized, createdAt: Date.now() });
+    await ctx.scheduler.runAfter(0, internal.email.sendRsvpEmail, {
+      email: normalized,
+    });
     return { ok: true, duplicate: false as const };
   },
 });
