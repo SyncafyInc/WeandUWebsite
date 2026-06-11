@@ -27,6 +27,10 @@ export function RSVP() {
         <span className="block text-black/40">LEAVE CONNECTED.</span>
       </h2>
 
+      <p className="mt-8 max-w-2xl text-sm font-bold tracking-widest md:text-base">
+        SIGN UP BELOW TO RECEIVE YOUR LIMITED FREE RSVP CODE FOR KICK-ÖFF — ONLY 75 SPOTS AVAILABLE.
+      </p>
+
       <form
         onSubmit={async (e) => {
           e.preventDefault();
